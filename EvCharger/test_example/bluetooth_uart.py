@@ -12,7 +12,7 @@ from web3.contract import ConciseContract
 
 HC05_Port = serial.Serial("/dev/ttyUSB0",9600)
 HC05_EN = OutputDevice(4)                     #if this pin sets high,enable the bluetooth,otherwise disable
-HC05_EN.off()                             	  #default disable bluetooth
+HC05_EN.off()                                 #default disable bluetooth
 button = Button(2)                            #if the button has been pressed long for 2 seconds,enable the bluetooth
 HC05_State = InputDevice(17)                  #if the bluetooth is connected, the pin is high.
 button27 = Button(27)                         #simulate the action of putting on the gun
@@ -23,11 +23,11 @@ HC05_State_flag = 0
 lasttime_state = 0
 HC05_EN_flag = 0
 
-w3 = Web3(Web3.HTTPProvider("http://192.168.1.156:8042"))
-w3.eth.defaultAccount = w3.eth.accounts[1]
-w3.personal.unlockAccount(w3.eth.accounts[1],'199628')
+w3 = Web3(Web3.HTTPProvider("http://39.96.176.25:8501"))
+w3.eth.defaultAccount = w3.eth.accounts[0]
+w3.personal.unlockAccount(w3.eth.accounts[0],'cpchain')
 chargingfee = w3.eth.contract(
-    address='0x325804dA67A1d008c2F12d9b1C79B28eD1Da9618',
+    address='0xDE374A8e2FBDbBa0169d9B75221E68623a0af36c',
     abi=[{'constant': True, 'inputs': [], 'name': 'value', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': False, 'inputs': [], 'name': 'Withdraw_fund', 'outputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': False, 'inputs': [], 'name': 'payDeposit', 'outputs': [], 'payable': True, 'stateMutability': 'payable', 'type': 'function'}, {'constant': True, 'inputs': [], 'name': 'car_owner', 'outputs': [{'name': '', 'type': 'address'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': True, 'inputs': [], 'name': 'charger_owner', 'outputs': [{'name': '', 'type': 'address'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': False, 'inputs': [{'name': 'to', 'type': 'address'}, {'name': 'return_fee', 'type': 'uint256'}], 'name': 'Finishcharging', 'outputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'function'}, {'inputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'constructor'}]
 )
 
@@ -216,7 +216,9 @@ while True:
 				fee_need = charging_durition*100000000000000000
 				print(timestamp("The fee of charging is "+str(fee_need)+" Wei"))
 				return_fee = 10*1000000000000000000 - fee_need
-				tx_hash = chargingfee.functions.Finishcharging(w3.eth.accounts[2],Web3.toWei(int(return_fee), 'wei')).transact()
+				w3.personal.unlockAccount(w3.eth.accounts[0],'cpchain')
+				# tx_hash = chargingfee.functions.Finishcharging(w3.eth.accounts[2],Web3.toWei(int(return_fee), 'wei')).transact()
+				tx_hash = chargingfee.functions.Finishcharging(w3.eth.accounts[2],Web3.toWei(int(5), 'wei')).transact()
 				print(timestamp("Have generated the fee deduction transaction"))
 				AnswerACK()     #position1
 				send_data_raw(tx_hash)

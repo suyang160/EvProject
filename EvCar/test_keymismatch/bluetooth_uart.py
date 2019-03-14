@@ -9,11 +9,11 @@ from web3 import Web3
 from web3.contract import ConciseContract
 from gpiozero import *
 
-w3 = Web3(Web3.HTTPProvider("http://192.168.1.156:8042"))
-w3.eth.defaultAccount = w3.eth.accounts[2]
-w3.personal.unlockAccount(w3.eth.accounts[2],'199628')
+w3 = Web3(Web3.HTTPProvider("http://39.96.176.25:8501"))
+w3.eth.defaultAccount = w3.eth.accounts[1]
+w3.personal.unlockAccount(w3.eth.accounts[1],'cpchain')
 chargingfee = w3.eth.contract(
-    address='0x325804dA67A1d008c2F12d9b1C79B28eD1Da9618',
+    address='0xDE374A8e2FBDbBa0169d9B75221E68623a0af36c',
     abi=[{'constant': True, 'inputs': [], 'name': 'value', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': False, 'inputs': [], 'name': 'Withdraw_fund', 'outputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': False, 'inputs': [], 'name': 'payDeposit', 'outputs': [], 'payable': True, 'stateMutability': 'payable', 'type': 'function'}, {'constant': True, 'inputs': [], 'name': 'car_owner', 'outputs': [{'name': '', 'type': 'address'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': True, 'inputs': [], 'name': 'charger_owner', 'outputs': [{'name': '', 'type': 'address'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': False, 'inputs': [{'name': 'to', 'type': 'address'}, {'name': 'return_fee', 'type': 'uint256'}], 'name': 'Finishcharging', 'outputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'function'}, {'inputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'constructor'}]
 )
 
@@ -125,7 +125,9 @@ while True:
 					print(timestamp("Have received the value of the deposit"+Deposit_value))
 					AnswerACK()
 					print(timestamp("Prepare to pay the deposit"))
-					tx_hash = chargingfee.functions.payDeposit().transact({'value': Web3.toWei(int(Deposit_value), 'ether')})
+					w3.personal.unlockAccount(w3.eth.accounts[1],'cpchain')
+					#tx_hash = chargingfee.functions.payDeposit().transact({'value': Web3.toWei(int(Deposit_value), 'ether')})
+					tx_hash = chargingfee.functions.payDeposit().transact({'value': Web3.toWei(int(5), 'ether')})
 					print(timestamp("The transaction hash has been generated "))
 					sleep(1)
 					HC05_Port.write(tx_hash)
