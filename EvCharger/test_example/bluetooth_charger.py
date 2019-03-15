@@ -174,7 +174,7 @@ while True:
 				HC05_Port.flushOutput()
 				HC05_Port.write("The public key has not been registered".encode())
 				WaitACK()
-				HC05_Port.write("0x325804dA67A1d008c2F12d9b1C79B28eD1Da9618".encode())
+				HC05_Port.write("0xDE374A8e2FBDbBa0169d9B75221E68623a0af36c".encode())
 				print(timestamp("Have sent the contract address"))
 				WaitACK()
 				HC05_Port.write("10".encode())
