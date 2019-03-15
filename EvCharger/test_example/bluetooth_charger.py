@@ -9,6 +9,9 @@ from time import strftime,asctime,ctime,gmtime,mktime
 from time import sleep
 from web3 import Web3
 from web3.contract import ConciseContract
+from web3.contract import ImplicitContract
+from web3.middleware import geth_poa_middleware
+from web3 import Web3, HTTPProvider
 
 HC05_Port = serial.Serial("/dev/ttyUSB0",9600)
 HC05_EN = OutputDevice(4)                     #if this pin sets high,enable the bluetooth,otherwise disable
@@ -30,7 +33,7 @@ chargingfee = w3.eth.contract(
     address='0xDE374A8e2FBDbBa0169d9B75221E68623a0af36c',
     abi=[{'constant': True, 'inputs': [], 'name': 'value', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': False, 'inputs': [], 'name': 'Withdraw_fund', 'outputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': False, 'inputs': [], 'name': 'payDeposit', 'outputs': [], 'payable': True, 'stateMutability': 'payable', 'type': 'function'}, {'constant': True, 'inputs': [], 'name': 'car_owner', 'outputs': [{'name': '', 'type': 'address'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': True, 'inputs': [], 'name': 'charger_owner', 'outputs': [{'name': '', 'type': 'address'}], 'payable': False, 'stateMutability': 'view', 'type': 'function'}, {'constant': False, 'inputs': [{'name': 'to', 'type': 'address'}, {'name': 'return_fee', 'type': 'uint256'}], 'name': 'Finishcharging', 'outputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'function'}, {'inputs': [], 'payable': False, 'stateMutability': 'nonpayable', 'type': 'constructor'}]
 )
-
+w3.middleware_stack.inject(geth_poa_middleware,layer=0)
 
 def WaitACK():
 	WaitAck_flag = True
@@ -94,6 +97,7 @@ while True:
 				pass
 			HC05_EN.on()
 			HC05_EN_flag = 1
+	HC05_EN_flag = 1
 	if HC05_EN_flag == 1:
 		if HC05_State.value == 0:
 			if lasttime_state == 1:

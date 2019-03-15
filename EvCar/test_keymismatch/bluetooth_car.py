@@ -7,6 +7,10 @@ from time import strftime,asctime,ctime,gmtime,mktime
 from time import sleep
 from web3 import Web3
 from web3.contract import ConciseContract
+from web3.contract import ConciseContract
+from web3.contract import ImplicitContract
+from web3.middleware import geth_poa_middleware
+from web3 import Web3, HTTPProvider
 from gpiozero import *
 
 w3 = Web3(Web3.HTTPProvider("http://39.96.176.25:8501"))
@@ -20,6 +24,8 @@ chargingfee = w3.eth.contract(
 HC05_Port = serial.Serial("/dev/ttyUSB0",9600)
 HC05_State = InputDevice(17)                  #if the bluetooth is connected, the pin is high.
 lasttime_state = 0
+w3.middleware_stack.inject(geth_poa_middleware,layer=0)
+
 def WaitACK():
 	WaitAck_flag = True
 	while WaitAck_flag:
