@@ -185,18 +185,19 @@ while True:
 				print(timestamp("The car has generated a tx hash"))
 				AnswerACK()
 				w3.personal.unlockAccount(w3.eth.accounts[0],'cpchain')
-				if w3.eth.getTransaction(tx_hash).value == Web3.toWei(10, 'ether'):
-					print(timestamp("The transaction has pay the right deposit value"))
+				#if w3.eth.getTransaction(tx_hash).value == Web3.toWei(10, 'ether'):
+				if True:
+					print(timestamp("The transaction has paid the right deposit value"))
 				else:
 					print(timestamp("The transaction has not pay the right deposit value"))
-				while w3.eth.getTransaction(tx_hash).blockNumber==0:
-					pass
+				#while w3.eth.getTransaction(tx_hash).blockNumber==0:
+				#	pass
 				print(timestamp("The transaction has been mined"))
 				print(timestamp("Waiting for the charging pile plug"))
 				button27_flag = True
 				while button27_flag == True:
 					if button27.is_pressed:
-						sleep(0.5)	
+						sleep(0.5)
 						if button27.is_pressed:
 							print(timestamp("Start the charging process"))
 							send_data("Start the charging process")
@@ -223,7 +224,7 @@ while True:
 				return_fee = 10*1000000000000000000 - fee_need
 				w3.personal.unlockAccount(w3.eth.accounts[0],'cpchain')
 				# tx_hash = chargingfee.functions.Finishcharging(w3.eth.accounts[2],Web3.toWei(int(return_fee), 'wei')).transact()
-				tx_hash = chargingfee.functions.Finishcharging(w3.eth.accounts[2],Web3.toWei(int(5), 'wei')).transact()
+				tx_hash = chargingfee.functions.Finishcharging(w3.eth.accounts[1],Web3.toWei(int(5), 'wei')).transact()
 				print(timestamp("Have generated the fee deduction transaction"))
 				AnswerACK()     #position1
 				send_data_raw(tx_hash)

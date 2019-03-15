@@ -138,11 +138,12 @@ while True:
 					sleep(1)
 					HC05_Port.write(tx_hash)
 					WaitACK()
-					car_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+					#car_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 					print(timestamp("Have received the car deposit transaction receipt"))
 					data = None
 					while data != "End the charging process":
 						data = receive_data()
+						print(data)
 						if data == "Start the charging process":
 							print(timestamp("Have started the charging process"))
 							AnswerACK()
