@@ -184,6 +184,7 @@ while True:
 				tx_hash = receive_data_not_encode()
 				print(timestamp("The car has generated a tx hash"))
 				AnswerACK()
+				w3.personal.unlockAccount(w3.eth.accounts[0],'cpchain')
 				if w3.eth.getTransaction(tx_hash).value == Web3.toWei(10, 'ether'):
 					print(timestamp("The transaction has pay the right deposit value"))
 				else:
